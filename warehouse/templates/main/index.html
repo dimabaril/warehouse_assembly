@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %} Главная {% endblock %}
+{% block content %}
+  <div>
+    {% for element in page_obj %}
+      {% include 'includes/element.html' %}
+      {% if not forloop.last %}<hr>{% endif %}
+      <!-- под последним постом нет линии -->
+    {% endfor %}
+    {% include 'main/includes/paginator.html' %}
+  </div>
+{% endblock %}

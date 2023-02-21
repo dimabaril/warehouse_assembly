@@ -1,0 +1,17 @@
+  {% comment %} {{ form.as_div }} {% endcomment %}
+
+  <br>{{ form.name.label_tag }}
+  <br>{{ form.name }}
+  {% comment %} {{ form.name.help_text }} {% endcomment %}
+  <br>{{ form.measurement_value.label_tag }}
+  <br>{{ form.measurement_value }}
+  {% comment %} {{ form.measurement_value.help_text }} {% endcomment %}
+  <br>{{ form.description.label_tag }}
+  <br>{{ form.description }}<br>
+  {% comment %} {{ form.description.help_text }} {% endcomment %}
+  {% comment %} {{ form.include.as_hidden }} {% endcomment %}
+
+  {{ formset.management_form }}
+  {% for form in formset.forms %}
+    {{ form }}<br>
+  {% endfor %}

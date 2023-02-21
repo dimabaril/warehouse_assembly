@@ -1,0 +1,6 @@
+<div>Название: {{ element.name }}</div>
+<div>Ед. изм.: {{ element.measurement_value }}</div>
+<div>Описание: {{ element.description }}</div>
+{% comment %} <div>Дата публикации: {{ element.pub_date }}</div>
+<div>Автор: {{ element.author }}</div> {% endcomment %}
+<a href="{% url 'main:element_detail' element.id %}">подробная информация</a>
