@@ -2,10 +2,10 @@
 {% block title %} Елемент: {{ element.name|truncatechars:30 }} {% endblock %}
 {% block content %}
 <div>
-  <button href="{% url 'main:element_edit' element.id %}">
-    редактировать запись</button>
-  <button href="{% url 'main:element_delete' element.id %}">
-    удалить запись</button>
+  <a href="{% url 'main:element_edit' element.id %}">
+    редактировать запись</a>
+  <a href="{% url 'main:element_delete' element.id %}">
+    удалить запись</a>
   <div>Название: {{ element.name }}</div>
   <div>Ед. изм.: {{ element.measurement_value }}</div>
   <div>Описание: {{ element.description }}</div>
