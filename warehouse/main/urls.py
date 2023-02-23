@@ -15,4 +15,6 @@ urlpatterns = [
 #          views.element_edit, name='element_edit'),
     path('element/<int:element_id>/edit/',
          views.ElementUpdate.as_view(), name='element_edit'),
+    path('element/<int:element_id>/delete/',
+         views.ElementDelete.as_view(), name='element_delete'),
 ]
