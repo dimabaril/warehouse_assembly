@@ -2,16 +2,14 @@
 {% block title %} Елемент: {{ element.name|truncatechars:30 }} {% endblock %}
 {% block content %}
 <div>
-  <a href="{% url 'main:element_edit' element.id %}">
-    редактировать запись</a>
-  <a href="{% url 'main:element_delete' element.id %}">
-    удалить запись</a>
+  <a href="{% url 'main:element_edit' element.id %}">Редактировать запись</a>
+  <a href="{% url 'main:element_delete' element.id %}">Удалить запись</a>
   <div>Название: {{ element.name }}</div>
   <div>Ед. изм.: {{ element.measurement_value }}</div>
   <div>Описание: {{ element.description }}</div>
   <div>Дата публикации: {{ element.pub_date }}</div>
   <div>Автор: {{ element.author }}</div>
-  <div>Включает: 
+  <div>Включает:
     <table>
       <thead>
         <tr>
@@ -21,55 +19,29 @@
         </tr>
       </thead>
       <tbody>
-        {% comment %} {% for included_element in element.include.all %}
-          {% with amount=included_element.to_elems %}
-            <tr>
-              <td><a href="{% url 'main:element_detail' included_element.id %}">{{ included_element.name }}</a></td>
-              <td>{{ included_element.measurement_value }}</td>
-              <td>{{ included_element.author }}</td>
-              <td>{{ amount }}</td>
-            </tr>
-          {% endwith %}
-        {% empty %}
-          <tr>
-            <td colspan="4">Нет включенных элементов</td>
-          </tr>
-        {% endfor %} {% endcomment %}
-
+        {% with step=0 %}
         {% for elem_in_elem in elem_in_elems %}
-            <tr>
-              <td><a href="{% url 'main:element_detail' elem_in_elem.to_elem.id %}">{{ elem_in_elem.to_elem.name }}</a></td>
-              <td>{{ elem_in_elem.amount }}</td>
-              <td>{{ elem_in_elem.to_elem.measurement_value }}</td>
-            </tr>
+          <tr>
+            {% for i in ""|ljust:step %}
+              <td></td>
+            {% endfor %}
+            <td><a href="{% url 'main:element_detail' elem_in_elem.to_elem.id %}">{{ elem_in_elem.to_elem.name }}</a></td>
+            <td>{{ elem_in_elem.amount }}</td>
+            <td>{{ elem_in_elem.to_elem.measurement_value }}</td>
+            {% with step=step|add:3 %}
+
+            {% include 'includes/including.html' %}
+
+            {% endwith %}
+          </tr>
         {% empty %}
           <tr>
             <td colspan="4">Нет включенных элементов</td>
           </tr>
         {% endfor %}
+        {% endwith %}
       </tbody>
     </table>
   </div>
 </div>
 {% endblock %}
-
-
-
-{% comment %} {% extends 'base.html' %}
-{% block title %} Елемент: {{ element.name|truncatechars:30 }} {% endblock %}
-{% block content %}
-<div>
-  <a href="{% url 'main:element_edit' element.id %}">редактировать запись</a>
-  <div>Название: {{ element.name }}</div>
-  <div>Ед. изм.: {{ element.measurement_value }}</div>
-  <div>Описание: {{ element.description }}</div>
-  <div>Дата публикации: {{ element.pub_date }}</div>
-  <div>Автор: {{ element.author }}</div>
-  <div>Включает: 
-    {% for element in include %}
-      <a href="{% url 'main:element_detail' element.id %}"> {{ element.name }} </a>
-      ,
-    {% endfor %}
-  </div>
-</div>
-{% endblock %} {% endcomment %}

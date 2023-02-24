@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.forms import inlineformset_factory
-from django.views.generic import DeleteView, ListView, UpdateView
+from django.views.generic import DetailView, DeleteView, ListView, UpdateView
 from django.views.generic.edit import CreateView
 from django.urls import reverse, reverse_lazy
 from django.shortcuts import get_object_or_404, redirect, render
@@ -17,7 +17,7 @@ class IndexList(ListView):
     context_object_name = 'page_obj'
 
 
-def element_detail(request, element_id):
+def element_detail(request, element_id):  # переписать на DetailView наверное
     """Отображаем элемент фильтруя по id и прочую инфу."""
     element = get_object_or_404(
         Element.objects.all(), id=element_id)
@@ -38,6 +38,20 @@ def element_detail(request, element_id):
     return render(request, 'main/element_detail.html', context)
 
 
+class ElementDetail(DetailView):
+    model = Element
+    template_name = 'main/element_detail.html'
+    # context_object_name = 'element'
+    pk_url_kwarg = 'element_id'
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['elem_in_elems'] = self.object.from_elems.select_related('to_elem')
+        # data['include'] = self.object.include.all()
+        # print(self.object.from_elems.last().to_elem.include.all())
+        return data
+
+
 class ElementCreate(CreateView):
     model = Element
     form_class = ElementForm
@@ -54,7 +68,7 @@ class ElementCreate(CreateView):
     def form_valid(self, form):
         context = self.get_context_data()
         formset = context['formset']
-        if (self.request.method == 'POST' and form.is_valid()
+        if (self.request.method == 'POST' and form.is_valid()  # Нужно ли здесь это? self.request.method == 'POST' and form.is_valid() большой вопрос, скорее нет.
                 and formset.is_valid()):
             self.object = form.save()
             formset.instance = self.object

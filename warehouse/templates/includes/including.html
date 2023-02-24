@@ -1,0 +1,29 @@
+{% for elem_in_elem in elem_in_elem.to_elem.from_elems.all %}
+  <tr>
+    {% for i in ""|ljust:step %}
+      <td></td>
+    {% endfor %}
+    <td><a href="{% url 'main:element_detail' elem_in_elem.to_elem.id %}">{{ elem_in_elem.to_elem.name }}</a></ td>
+    <td>{{ elem_in_elem.amount }}</td>
+    <td>{{ elem_in_elem.to_elem.measurement_value }}</td>
+    {% with step=step|add:3 %}
+
+    {% include 'includes/including.html' %}  {# вечный кайф ;) #}
+
+    {% comment %} {% for elem_in_elem in elem_in_elem.to_elem.from_elems.all %}
+      <tr>
+        {% for i in ""|ljust:step %}
+          <td></td>
+        {% endfor %}
+        <td><a href="{% url 'main:element_detail' elem_in_elem.to_elem.id %}">{{ elem_in_elem.to_elem.name }}</a></ td>
+        <td>{{ elem_in_elem.amount }}</td>
+        <td>{{ elem_in_elem.to_elem.measurement_value }}</td>
+        {% with step=step|add:3 %}
+        {# сюда пихаем инклюд #}
+        {% endwith %}
+      </tr>
+    {% endfor %} {% endcomment %}
+
+    {% endwith %}
+  </tr>
+{% endfor %}
