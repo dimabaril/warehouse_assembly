@@ -1,7 +1,6 @@
 # Сборочник
 Проект пилится и фукционирует тестово. Фронт минималистичен.
 
-![image example](example.png | width=50%)
 <img src="example.png" alt="image example" width="50%"/>
 
 ## Описание проекта
