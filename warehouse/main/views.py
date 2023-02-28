@@ -1,5 +1,4 @@
-from django.contrib.auth.decorators import login_required
-from django.forms import inlineformset_factory
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView, DeleteView, ListView, UpdateView
 from django.views.generic.edit import CreateView
 from django.urls import reverse, reverse_lazy
@@ -52,7 +51,7 @@ class ElementDetail(DetailView):
         return data
 
 
-class ElementCreate(CreateView):
+class ElementCreate(LoginRequiredMixin, CreateView):
     model = Element
     form_class = ElementForm
     template_name = 'main/element_create.html'
@@ -70,7 +69,9 @@ class ElementCreate(CreateView):
         formset = context['formset']
         if (self.request.method == 'POST' and form.is_valid()  # Нужно ли здесь это? self.request.method == 'POST' and form.is_valid() большой вопрос, скорее нет.
                 and formset.is_valid()):
-            self.object = form.save()
+            self.object = form.save(commit=False)
+            self.object.author = self.request.user
+            self.object.save()
             formset.instance = self.object
             formset.save()
             return super().form_valid(form)
@@ -82,7 +83,7 @@ class ElementCreate(CreateView):
         return reverse_lazy('main:element_detail', kwargs={'element_id': self.object.id})
 
 
-class ElementUpdate(UpdateView):
+class ElementUpdate(LoginRequiredMixin, UpdateView):
     model = Element
     form_class = ElementForm
     template_name = 'main/element_create.html'
@@ -121,7 +122,7 @@ class ElementUpdate(UpdateView):
         return reverse_lazy('main:element_detail', kwargs={'element_id': self.object.id})
 
 
-class ElementDelete(DeleteView):
+class ElementDelete(LoginRequiredMixin, DeleteView):
     model = Element
     success_url = reverse_lazy('main:index')
     pk_url_kwarg = 'element_id'

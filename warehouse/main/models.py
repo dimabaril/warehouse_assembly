@@ -75,8 +75,13 @@ class ElementInElement(models.Model):
         blank=True,
         null=True,
     )
+    # pub_date = models.DateTimeField(
+    #     auto_now_add=True,
+    #     verbose_name="Дата публикации",
+    # )
 
     class Meta:
+        ordering = ['to_elem__name']
         verbose_name = "Елементы в элементе"
         verbose_name_plural = "Елементы в элементах"
         constraints = [
